@@ -138,13 +138,66 @@ pip install -r requirements.txt
 
 ---
 
-## Variables de Entorno
+# Variables de Entorno
+
+El proyecto utiliza Google Gemini para las funcionalidades de Inteligencia Artificial.
+
+Se requiere una API Key válida para ejecutar los endpoints que realizan inferencia con modelos generativos.
+
+## Crear archivo `.env`
 
 Crear un archivo `.env` en la raíz del proyecto:
 
 ```env
 GEMINI_API_KEY=YOUR_API_KEY
 ```
+
+## Obtener una API Key
+
+La API Key puede obtenerse desde Google AI Studio:
+
+https://aistudio.google.com/
+
+## Uso dentro del proyecto
+
+La API Key es utilizada por los siguientes componentes:
+
+### Análisis de Tickets
+
+```http
+POST /analyze
+```
+
+Gemini analiza cada ticket y genera:
+
+* Categoría.
+* Prioridad.
+* Resumen.
+* Sentimiento.
+* Equipo responsable.
+
+### Preguntas sobre Tickets y Políticas
+
+```http
+POST /ask
+```
+
+Gemini recibe información de:
+
+* Estadísticas de tickets almacenadas en SQLite.
+* Base de conocimiento ubicada en:
+
+```text
+knowledge_base/support_policies.md
+```
+
+y genera respuestas en lenguaje natural utilizando un enfoque RAG simplificado.
+
+## Consideraciones
+
+* La cuota gratuita de Gemini puede limitar la cantidad de tickets analizados.
+* Si la cuota diaria se agota, los endpoints que utilizan IA pueden devolver errores relacionados con límites de uso.
+* El resto de funcionalidades del sistema (ingesta, almacenamiento, métricas y dashboard) continúan funcionando normalmente.
 
 ---
 
