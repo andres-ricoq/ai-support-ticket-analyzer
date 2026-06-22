@@ -239,19 +239,83 @@ Permite visualizar:
 
 ---
 
-### 5. Realizar preguntas
+### 5. Realizar preguntas sobre tickets y políticas de soporte
 
 ```http
 POST /ask
 ```
 
-Ejemplo:
+Este endpoint permite realizar preguntas en lenguaje natural sobre:
+
+* Estadísticas de los tickets analizados.
+* Categorías detectadas por la IA.
+* Prioridades asignadas.
+* Equipos responsables.
+* Políticas de soporte almacenadas en la Knowledge Base.
+* Reglas de prioridad y SLA.
+
+El endpoint utiliza un enfoque RAG simplificado:
+
+1. Obtiene estadísticas actuales de los tickets almacenados en SQLite.
+2. Carga la base de conocimiento ubicada en:
+
+```text
+knowledge_base/support_policies.md
+```
+
+3. Construye un contexto combinando información operacional y políticas internas.
+4. Envía dicho contexto a Gemini para generar una respuesta.
+
+#### Ejemplos de preguntas
+
+Consultar estadísticas:
 
 ```json
 {
   "question": "What category has the most tickets?"
 }
 ```
+
+```json
+{
+  "question": "How many high priority tickets exist?"
+}
+```
+
+```json
+{
+  "question": "Which team handles most of the tickets?"
+}
+```
+
+Consultar políticas de soporte:
+
+```json
+{
+  "question": "Which team handles refund requests?"
+}
+```
+
+```json
+{
+  "question": "What is the SLA for high priority tickets?"
+}
+```
+
+```json
+{
+  "question": "How should payment failures be prioritized?"
+}
+```
+
+#### Ejemplo de respuesta
+
+```json
+{
+  "answer": "High priority tickets should receive a response within 4 hours according to the support policy."
+}
+```
+
 
 ---
 
